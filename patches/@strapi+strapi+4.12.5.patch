@@ -1,0 +1,20 @@
+diff --git a/node_modules/@strapi/strapi/lib/middlewares/logger.js b/node_modules/@strapi/strapi/lib/middlewares/logger.js
+index ff5a3ad..d3e21fa 100644
+--- a/node_modules/@strapi/strapi/lib/middlewares/logger.js
++++ b/node_modules/@strapi/strapi/lib/middlewares/logger.js
+@@ -9,6 +9,14 @@ module.exports = (_, { strapi }) => {
+     await next();
+     const delta = Math.ceil(Date.now() - start);
+ 
+-    strapi.log.http(`${ctx.method} ${ctx.url} (${delta} ms) ${ctx.status}`);
++    let ipAddress;
++
++    if (ctx.request.ips.length > 0) {
++      ipAddress = ctx.request.ips[0];
++    } else {
++      ipAddress = ctx.request.ip;
++    }
++
++    strapi.log.http(`${ctx.method} ${ctx.url} (${delta} ms) ${ctx.status} - ${ipAddress}`);
+   };
+ };
